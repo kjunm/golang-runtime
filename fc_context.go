@@ -52,27 +52,33 @@ func (m *FCContext) GetLogger() *logrus.Entry {
 
 // NewFromContext ...
 func NewFromContext(req *http.Request) *FCContext {
+	//函数使用内存
 	mStr := req.Header.Get(fcFunctionMemory)
 	m, err := strconv.Atoi(mStr)
 	if err != nil {
 		m = -1
 	}
+	//函数执行超时时间
 	tStr := req.Header.Get(fcFunctionTimeout)
 	t, err := strconv.Atoi(tStr)
 	if err != nil {
 		t = -1
 	}
+	//初始化函数执行的超时时间
 	itStr := req.Header.Get(fcInitializationTimeout)
 	it, err := strconv.Atoi(itStr)
 	if err != nil {
 		it = -1
 	}
+	//函数重试次数
 	retryStr := req.Header.Get(fcRetryCount)
 	retryCnt, err := strconv.Atoi(retryStr)
 	if err != nil {
 		retryCnt = 0
 	}
+	//函数请求id
 	rid := req.Header.Get(fcRequestID)
+	//上下文赋值
 	ctx := &FCContext{
 		RequestID: rid,
 		Credentials: Credentials{
